@@ -12,7 +12,7 @@ export default function Header() {
           <li>Home</li>
           </Link>
           <Link to='/about'>
-          <li>About</li>
+          <li>Abot</li>
           </Link>
           <Link to='sign-in'>
           <li>Sign In</li>
