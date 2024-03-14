@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
@@ -7,6 +7,7 @@ export default function SignIn() {
   const [error, setError] = useState(false);
   //for loading
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -34,6 +35,9 @@ export default function SignIn() {
         setError(true);
         return;
       }
+
+      //navigate to home page
+      navigate('/dashboard');
       
     } catch (error) {
       setLoading(false);
