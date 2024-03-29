@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Link ,useNavigate} from "react-router-dom";
+import { signInStart ,signInSuccess,signInFailure} from "../redux/user/userSlice";
+import {useDispatch, useSelector} from 'react-redux';
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
-  //if error happening
-  const [error, setError] = useState(false);
-  //for loading
-  const [loading, setLoading] = useState(false);
+  const{loading,error}=useSelector((state)=>state.user);
   const navigate = useNavigate();
+  const dispatch= useDispatch();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -17,9 +17,11 @@ export default function SignIn() {
     e.preventDefault();
     //now the page is not going to refresh after click the sign-up button
     try {
-      setLoading(true);
-      //if there is no errors
-      setError(false);
+      // setLoading(true);
+      // //if there is no errors
+      // setError(false);
+
+dispatch(signInStart());
       //now create a request to the database
       const res = await fetch("/api/auth/signin", {
         method: "POST",
@@ -30,9 +32,9 @@ export default function SignIn() {
       });
       const data = await res.json();
      
-      setLoading(false);
+    dispatch(signInSuccess(data));
       if (data.success === false) {
-        setError(true);
+      dispatch(signInFailure());
         return;
       }
 
@@ -40,8 +42,7 @@ export default function SignIn() {
       navigate('/dashboard');
       
     } catch (error) {
-      setLoading(false);
-      setError(true);
+      dispatch(signInFailure(error));
     }
   };
   return (
